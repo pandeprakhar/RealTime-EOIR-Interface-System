@@ -1,28 +1,59 @@
 package parser;
-import model.TrackData;
 
-import java.io.IOException;
+import model.TREXpacket;
+
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 public class packetparser {
-    public static TrackData parse(byte[] data) throws IOException {
-        ByteBuffer bb = ByteBuffer.wrap(data);
-        TrackData trackdata = new TrackData();
-        trackdata.trackId = bb.getInt();
 
-        trackdata.range = bb.getDouble();
+    public static TREXpacket parse(
+            byte[] data
+    )
+    {
+        ByteBuffer bb =
+                ByteBuffer.wrap(data);
 
-        trackdata.azimuth = bb.getDouble();
+        TREXpacket p =
+                new TREXpacket();
 
-        trackdata.elevation = bb.getDouble();
+        p.header =
+                bb.get();
 
-        trackdata.speed = bb.getDouble();
+        p.sequenceNumber =
+                bb.getShort();
 
-        trackdata.heading = bb.getDouble();
+        p.deviceId =
+                bb.get();
 
-        trackdata.confidence = bb.getInt();
+        p.deviceNo =
+                bb.get();
 
-        trackdata.status = bb.get();
-        return trackdata;
+        p.length =
+                bb.get();
+
+        p.commandType =
+                bb.get();
+
+        p.commandCode =
+                bb.getShort();
+
+        // data length = packet length - commandcode bytes etc.
+        // temporarily assuming single byte payload
+
+        p.data =
+                new byte[1];
+
+        bb.get(
+                p.data
+        );
+
+        p.checksum =
+                bb.get();
+
+        p.stopBytes =
+                bb.getShort();
+
+        return p;
     }
 }

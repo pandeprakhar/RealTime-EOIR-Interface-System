@@ -1,24 +1,56 @@
 package serializer;
-import model.TrackData;
-import java.io.IOException;
+
+import model.TREXpacket;
+
 import java.nio.ByteBuffer;
-import java.util.*;
+
 public class packetreverseparser {
-    public static byte[] serialize(TrackData trackdata) throws IOException {
-        ByteBuffer bb= ByteBuffer.allocate(60);
-        bb.putInt(trackdata.trackId);
-        bb.putDouble(trackdata.range);
-        bb.putDouble(trackdata.azimuth);
-        bb.putDouble(trackdata.elevation);
-        bb.putDouble(trackdata.speed);
-        bb.putDouble(trackdata.heading);
-        bb.putInt(trackdata.confidence);
-        bb.put(trackdata.status);
+
+    public static byte[] serialize(TREXpacket p)
+    {
+        ByteBuffer bb=
+                ByteBuffer.allocate(300);
+
+        bb.put(
+                p.header
+        );
+
+        bb.putShort(
+                p.sequenceNumber
+        );
+
+        bb.put(
+                p.deviceId
+        );
+
+        bb.put(
+                p.deviceNo
+        );
+
+        bb.put(
+                p.length
+        );
+
+        bb.put(
+                p.commandType
+        );
+
+        bb.putShort(
+                p.commandCode
+        );
+
+        bb.put(
+                p.data
+        );
+
+        bb.put(
+                p.checksum
+        );
+
+        bb.putShort(
+                p.stopBytes
+        );
 
         return bb.array();
-
-
-
     }
-
 }
