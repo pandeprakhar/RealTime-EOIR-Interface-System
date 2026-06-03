@@ -41,9 +41,16 @@ public class packetparser {
         // data length = packet length - commandcode bytes etc.
         // temporarily assuming single byte payload
 
-        p.data =
-                new byte[1];
-
+        if(p.commandCode == 0x0001)
+        {
+            p.data =
+                    new byte[1];
+        }
+        else if(p.commandCode == 0x000C)
+        {
+            p.data =
+                    new byte[8];
+        }
         bb.get(
                 p.data
         );

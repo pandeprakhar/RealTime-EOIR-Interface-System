@@ -1,13 +1,10 @@
 package model;
+
 public class GPMdata {
 
     public byte reference;
 
-    public double azimuth;
+    public long azimuth;
 
-    public double elevation;
-
-    public double bearing;
-
-    public boolean following;
+    public long elevation;
 }

@@ -1,6 +1,5 @@
 package network;
 
-import builder.GPMBuilder;
 import model.TREXpacket;
 
 import java.net.DatagramPacket;
@@ -11,28 +10,52 @@ import static serializer.packetreverseparser.serialize;
 
 public class EOIRClient {
 
-    public static void main(String[] args) throws Exception
+    public static void sendPacket(
+            TREXpacket p
+    ) throws Exception
     {
-        DatagramSocket ds = new DatagramSocket();
-        while(true)
-        {
-            TREXpacket p = GPMBuilder.buildReference((byte)16);
-            byte[] data = serialize(p);
-            DatagramPacket dp =
-                    new DatagramPacket(
-                            data,
-                            data.length,
-                            InetAddress.getLocalHost(),
-                            5000
-                    );
-            ds.send(dp);
-            System.out.println(
-                    "GPM Reference sent"
-            );
+        DatagramSocket ds =
+                new DatagramSocket(8000);
+        System.out.println(
+                "Listening on port: "
+                        + ds.getLocalPort()
+        );
+        byte[] data =
+                serialize(p);
 
-            Thread.sleep(
-                    1000
-            );
-        }
+        DatagramPacket dp =
+                new DatagramPacket(
+                        data,
+                        data.length,
+                        InetAddress.getLocalHost(),
+                        5000
+                );
+
+        ds.send(dp);
+
+        System.out.println(
+                "Packet Sent"
+        );
+
+        DatagramPacket response =
+                new DatagramPacket(
+                        new byte[1024],
+                        1024
+                );
+
+        ds.receive(
+                response
+        );
+
+        System.out.println(
+                "Response : "
+                        +
+                        new String(
+                                response.getData(),
+                                0,
+                                response.getLength()
+                        )
+        );
+        ds.close();
     }
 }

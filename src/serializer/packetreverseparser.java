@@ -1,19 +1,21 @@
 package serializer;
 
 import model.TREXpacket;
+import service.ChecksumService;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 public class packetreverseparser {
 
-    public static byte[] serialize(TREXpacket p)
+    public static byte[] serialize(
+            TREXpacket p
+    )
     {
-        ByteBuffer bb=
+        ByteBuffer bb =
                 ByteBuffer.allocate(300);
 
-        bb.put(
-                p.header
-        );
+        bb.put(p.header);
 
         bb.putShort(
                 p.sequenceNumber
@@ -43,6 +45,18 @@ public class packetreverseparser {
                 p.data
         );
 
+        // get only written bytes
+        byte[] packetData =
+                Arrays.copyOf(
+                        bb.array(),
+                        bb.position()
+                );
+
+        p.checksum =
+                ChecksumService.calculate(
+                        packetData
+                );
+
         bb.put(
                 p.checksum
         );
@@ -51,6 +65,9 @@ public class packetreverseparser {
                 p.stopBytes
         );
 
-        return bb.array();
+        return Arrays.copyOf(
+                bb.array(),
+                bb.position()
+        );
     }
 }
