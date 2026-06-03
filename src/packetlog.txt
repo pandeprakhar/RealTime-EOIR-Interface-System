@@ -87,3 +87,15 @@
 2026-06-03T22:48:01.886381836 | TX | ACK sent
 2026-06-03T22:48:01.886671177 | RX | ACK received from Internal System
 2026-06-03T22:48:01.886914641 | TX | ACK forwarded to EOIR
+2026-06-03T23:09:53.316216527 | RX | TREX packet received from EOIR
+2026-06-03T23:09:53.319018974 | RX | Packet received from EOIR
+2026-06-03T23:09:53.321114913 | RX | Packet received from Middleware
+2026-06-03T23:09:53.322107773 | TX | ACK sent
+2026-06-03T23:09:53.322604904 | RX | ACK received from Internal System
+2026-06-03T23:09:53.322792780 | TX | ACK forwarded to EOIR
+2026-06-03T23:09:55.125056541 | RX | TREX packet received from EOIR
+2026-06-03T23:09:55.125466578 | RX | Packet received from EOIR
+2026-06-03T23:09:55.125913995 | RX | Packet received from Middleware
+2026-06-03T23:09:55.126064219 | TX | ACK sent
+2026-06-03T23:09:55.126285188 | RX | ACK received from Internal System
+2026-06-03T23:09:55.126468886 | TX | ACK forwarded to EOIR
