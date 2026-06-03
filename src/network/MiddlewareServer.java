@@ -1,6 +1,8 @@
 package network;
 
+import logger.Packetlogger;
 import model.TREXpacket;
+import service.PacketValidator;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -35,7 +37,23 @@ public class MiddlewareServer {
 
             TREXpacket p =
                     parse(data);
+            if(
+                    !PacketValidator
+                            .validate(p)
+            )
+            {
+                Packetlogger.log(
+                        "ERROR",
+                        "Invalid Packet"
+                );
 
+                continue;
+            }
+
+            Packetlogger.log(
+                    "RX",
+                    "TREX packet received from EOIR"
+            );
             System.out.println(
                     "TREX packet received"
             );
@@ -54,6 +72,10 @@ public class MiddlewareServer {
             eoirSocket.send(
                     forward
             );
+            Packetlogger.log(
+                    "RX",
+                    "Packet received from EOIR"
+            );
 
             DatagramPacket cmd =
                     new DatagramPacket(
@@ -63,6 +85,10 @@ public class MiddlewareServer {
 
             internalSocket.receive(
                     cmd
+            );
+            Packetlogger.log(
+                    "RX",
+                    "ACK received from Internal System"
             );
 
             DatagramPacket returnPacket =
@@ -75,6 +101,10 @@ public class MiddlewareServer {
 
             internalSocket.send(
                     returnPacket
+            );
+            Packetlogger.log(
+                    "TX",
+                    "ACK forwarded to EOIR"
             );
         }
     }
