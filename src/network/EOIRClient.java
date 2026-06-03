@@ -10,32 +10,31 @@ import static serializer.packetreverseparser.serialize;
 
 public class EOIRClient {
 
-    public static void sendPacket(
-            TREXpacket p
-    ) throws Exception
-    {
-        DatagramSocket ds =
-                new DatagramSocket(8000);
-        System.out.println(
-                "Listening on port: "
-                        + ds.getLocalPort()
-        );
-        byte[] data =
-                serialize(p);
+    private static final DatagramSocket ds;
 
-        DatagramPacket dp =
+    static {
+        try {
+            ds = new DatagramSocket(8000);
+            System.out.println("EOIR Client listening on port 8000");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void sendPacket(TREXpacket p) throws Exception {
+
+        byte[] data = serialize(p);
+
+        ds.send(
                 new DatagramPacket(
                         data,
                         data.length,
                         InetAddress.getLocalHost(),
                         5000
-                );
-
-        ds.send(dp);
-
-        System.out.println(
-                "Packet Sent"
+                )
         );
+
+        System.out.println("Packet Sent");
 
         DatagramPacket response =
                 new DatagramPacket(
@@ -43,19 +42,15 @@ public class EOIRClient {
                         1024
                 );
 
-        ds.receive(
-                response
-        );
+        ds.receive(response);
 
         System.out.println(
-                "Response : "
-                        +
+                "Response : " +
                         new String(
                                 response.getData(),
                                 0,
                                 response.getLength()
                         )
         );
-        ds.close();
     }
 }

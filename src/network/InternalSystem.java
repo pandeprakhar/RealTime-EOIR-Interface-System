@@ -1,5 +1,6 @@
 package network;
 
+import Constants.GPMCommandCodes;
 import logger.Packetlogger;
 import model.TREXpacket;
 
@@ -24,14 +25,14 @@ public class InternalSystem {
             ds.receive(dp);
             TREXpacket p =
                     parse(dp.getData());
-            if(p.commandCode == 0x0001)
+            if(p.commandCode == GPMCommandCodes.REFERENCE)
             {
                 System.out.println(
                         "Reference = "
                                 + p.data[0]
                 );
             }
-            if(p.commandCode == 0x000C)
+            if(p.commandCode == GPMCommandCodes.AZIMUTH_ELEVATION)
             {
                 ByteBuffer bb =
                         ByteBuffer.wrap(

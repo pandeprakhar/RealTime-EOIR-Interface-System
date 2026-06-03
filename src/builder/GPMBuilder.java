@@ -1,6 +1,7 @@
 package builder;
 
 import model.TREXpacket;
+import Constants.GPMCommandCodes;
 
 import java.nio.ByteBuffer;
 
@@ -26,7 +27,7 @@ public class GPMBuilder {
 
         p.commandType = 0x57; // Write
 
-        p.commandCode = (short) 0x0001;
+        p.commandCode = (short) GPMCommandCodes.REFERENCE;
 
         p.data = new byte[]{
                 reference
@@ -60,7 +61,7 @@ public class GPMBuilder {
 
         p.commandType = 0x57; // Write
 
-        p.commandCode = (short) 0x000C;
+        p.commandCode = (short) GPMCommandCodes.AZIMUTH_ELEVATION;
 
         ByteBuffer payload =
                 ByteBuffer.allocate(8);

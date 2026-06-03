@@ -1,6 +1,8 @@
 package parser;
 
+import Constants.GPMCommandCodes;
 import model.TREXpacket;
+import service.PayloadLengthResolver;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -40,21 +42,18 @@ public class packetparser {
 
         // data length = packet length - commandcode bytes etc.
         // temporarily assuming single byte payload
+        int payloadLength =
+                PayloadLengthResolver
+                        .getLength(
+                                p.commandCode
+                        );
 
-        if(p.commandCode == 0x0001)
-        {
-            p.data =
-                    new byte[1];
-        }
-        else if(p.commandCode == 0x000C)
-        {
-            p.data =
-                    new byte[8];
-        }
+        p.data =
+                new byte[payloadLength];
+
         bb.get(
                 p.data
         );
-
         p.checksum =
                 bb.get();
 
