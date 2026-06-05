@@ -8,7 +8,7 @@ import java.net.InetAddress;
 
 import static serializer.packetreverseparser.serialize;
 
-public class EOIRClient {
+public class HostSystem {
 
     private static final DatagramSocket ds;
 

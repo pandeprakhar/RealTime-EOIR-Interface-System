@@ -82,4 +82,139 @@ public class GPMBuilder {
 
         return p;
     }
+    public static TREXpacket buildOffset(
+            int azOffset,
+            int elOffset
+    )
+    {
+        TREXpacket p = new TREXpacket();
+
+        p.header = (byte)0xE1;
+        p.sequenceNumber = sequence++;
+        p.deviceId = 0x13;
+        p.deviceNo = 0;
+        p.length = 8;
+        p.commandType = 0x57;
+        p.commandCode =GPMCommandCodes.OFFSET;;
+
+        ByteBuffer payload =
+                ByteBuffer.allocate(8);
+
+        payload.putInt(azOffset);
+        payload.putInt(elOffset);
+
+        p.data = payload.array();
+
+        p.stopBytes = (short)0xFFFE;
+
+        return p;
+    }
+    public static TREXpacket buildBearing(
+            byte rff,
+            int azimuth,
+            int elevation,
+            short distance
+    )
+    {
+        TREXpacket p = new TREXpacket();
+
+        p.header = (byte)0xE1;
+        p.sequenceNumber = sequence++;
+        p.deviceId = 0x13;
+        p.deviceNo = 0;
+        p.length = 11;
+        p.commandType = 0x57;
+        p.commandCode = GPMCommandCodes.BEARING;
+
+        ByteBuffer payload =
+                ByteBuffer.allocate(11);
+
+        payload.put(rff);
+        payload.putInt(azimuth);
+        payload.putInt(elevation);
+        payload.putShort(distance);
+
+        p.data = payload.array();
+
+        p.stopBytes = (short)0xFFFE;
+
+        return p;
+    }
+    public static TREXpacket buildLandmark(
+            int latitude,
+            byte latRef,
+            int longitude,
+            byte lonRef,
+            short altitude
+    )
+    {
+        TREXpacket p = new TREXpacket();
+
+        p.header = (byte)0xE1;
+        p.sequenceNumber = sequence++;
+        p.deviceId = 0x13;
+        p.deviceNo = 0;
+        p.length = 12;
+        p.commandType = 0x57;
+        p.commandCode = GPMCommandCodes.LANDMARK;
+
+        ByteBuffer payload =
+                ByteBuffer.allocate(12);
+
+        payload.putInt(latitude);
+        payload.put(latRef);
+        payload.putInt(longitude);
+        payload.put(lonRef);
+        payload.putShort(altitude);
+
+        p.data = payload.array();
+
+        p.stopBytes = (short)0xFFFE;
+
+        return p;
+    }
+    public static TREXpacket buildPTU(
+            byte action
+    )
+    {
+        TREXpacket p = new TREXpacket();
+
+        p.header = (byte)0xE1;
+        p.sequenceNumber = sequence++;
+        p.deviceId = 0x13;
+        p.deviceNo = 0;
+        p.length = 1;
+        p.commandType = 0x57;
+        p.commandCode = GPMCommandCodes.PTU;
+
+        p.data = new byte[]{
+                action
+        };
+
+        p.stopBytes = (short)0xFFFE;
+
+        return p;
+    }
+    public static TREXpacket buildPoint(
+            byte point
+    )
+    {
+        TREXpacket p = new TREXpacket();
+
+        p.header = (byte)0xE1;
+        p.sequenceNumber = sequence++;
+        p.deviceId = 0x13;
+        p.deviceNo = 0;
+        p.length = 1;
+        p.commandType = 0x57;
+        p.commandCode = GPMCommandCodes.POINT;
+
+        p.data = new byte[]{
+                point
+        };
+
+        p.stopBytes = (short)0xFFFE;
+
+        return p;
+    }
 }
